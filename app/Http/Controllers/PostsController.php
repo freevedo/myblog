@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+
 use Illuminate\Http\Request;
 use App\Models\Post;
 use App\Http\Controllers\Auth;
@@ -20,9 +21,9 @@ class PostsController extends Controller
     {
         //syntax with DB
 
-
         //syntax with eloquent
-        $posts = Post::orderBy('created_at', 'desc')->get();
+        $posts = Post::where('expire_date','<','CURRENT_TIMESTAMPS')
+        ->orderBy('created_at', 'desc')->get();
         return view('posts.index')->with('posts' , $posts);
         //return $posts;
 
