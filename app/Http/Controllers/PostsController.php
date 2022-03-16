@@ -3,6 +3,8 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use App\Models\Post;
+use App\Http\Controllers\Auth;
 use DB;
 class PostsController extends Controller
 {
@@ -18,7 +20,8 @@ class PostsController extends Controller
 
         //syntax with eloquent
         $posts = Post::orderBy('created_at', 'desc')->get();
-        return $posts;
+        return view('posts.index')->with('posts' , $posts);
+        //return $posts;
 
 
     }
@@ -30,7 +33,7 @@ class PostsController extends Controller
      */
     public function create()
     {
-        
+        return view('posts.create');
     }
 
     /**
@@ -43,8 +46,10 @@ class PostsController extends Controller
     {
         //requirements
         $this->validate($request, [
-            'name' => 'required',
-            'content' => 'required'
+            'name' => 'required|max:255',
+            'content' => 'required',
+            'user_id' => 'required|integer',
+            'created_at' => 'nullable|date'
         ]);
 
         //create a post
@@ -57,7 +62,7 @@ class PostsController extends Controller
         $post->user_id = $request->user_id;
         $post->save();
 
-
+        return redirect('/posts')->with('success', 'Post successfully created');
     }
 
     /**
@@ -69,7 +74,8 @@ class PostsController extends Controller
     public function show($id)
     {
         $post = Post::find($id);
-        return $post;
+        return view('posts.show')->with('post', $post);
+        //return $post;
     }
 
     /**
@@ -100,8 +106,10 @@ class PostsController extends Controller
     {
         //requirements
         $this->validate($request, [
-            'name' => 'required',
-            'content' => 'required'
+            'name' => 'required|max:255',
+            'content' => 'required',
+            'user_id' => 'required|integer',
+            'created_at' => 'nullable|date'
         ]);
 
         
