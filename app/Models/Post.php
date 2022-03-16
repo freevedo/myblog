@@ -16,4 +16,10 @@ class Post extends Model
     {
         return $this->belongsTo(User::class);
     }
+
+    /**
+     * the content(text) of the article should be hidden
+     */
+
+     protected $hidden = ['content'];
 }
