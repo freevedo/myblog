@@ -19,9 +19,9 @@ class PostsController extends Controller
      */
     public function index()
     {
-        //syntax with DB
+        
 
-        //syntax with eloquent
+        //filter the articles with the expire date and show only not expired articles
         $posts = Post::where('expire_date','<','CURRENT_TIMESTAMPS')
         ->orderBy('created_at', 'desc')->get();
         return view('posts.index')->with('posts' , $posts);
