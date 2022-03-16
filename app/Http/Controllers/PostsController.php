@@ -22,7 +22,7 @@ class PostsController extends Controller
         
 
         //filter the articles with the expire date and show only not expired articles
-        $posts = Post::where('expire_date','<','CURRENT_TIMESTAMPS')
+        $posts = Post::where('expire_date','>','CURRENT_TIMESTAMPS')
         ->orderBy('created_at', 'desc')->get();
         return view('posts.index')->with('posts' , $posts);
         //return $posts;
@@ -54,7 +54,7 @@ class PostsController extends Controller
             'content' => 'required',
             'user_id' => 'required|integer',
             'created_at' => 'nullable|date',
-            'expire_date' => 'date'
+            'tag' => 'nullable'
         ]);
 
         //create a post
@@ -63,6 +63,7 @@ class PostsController extends Controller
         $post->name = $request->name;
         $post->content = $request->content;
         $post->user_id = $request->user_id;
+        $post->expire_date = $request->expire_date;
         $post->save();
 
         return redirect('/posts')->with('success', 'Post successfully created');
@@ -113,7 +114,8 @@ class PostsController extends Controller
             'name' => 'required|max:255',
             'content' => 'required',
             'user_id' => 'required|integer',
-            'created_at' => 'nullable|date'
+            'created_at' => 'nullable|date',
+            'expire_date' => 'date'
         ]);
 
         
@@ -124,6 +126,8 @@ class PostsController extends Controller
         $post->name = $request->input('name');
         $post->content = $request->input('content');
         $post->user_id = $request->input('user_id');
+        $post->tag = $request->input('tag');
+        $post->expire_date = $request->input('expire_date');
         $post->save();
 
         return redirect('/posts')->with('success','Post updated');
