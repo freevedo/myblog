@@ -13,19 +13,9 @@ return new class extends Migration
      */
     public function up()
     {
-        Schema::create('posts', function (Blueprint $table) {
-            $table->id();
-            $table->string('name');
-            $table->mediumText('content');
-            $table->timestamps();
-        });
-
         Schema::table('posts', function (Blueprint $table) {
-            $table->foreignId('user_id')->constrained('users')->onUpdate('cascade')
-            ->onDelete('cascade');
+            $table->timestamp('expire_date',$precision = 0)->useCurrent();
         });
-
-        
     }
 
     /**
@@ -35,6 +25,8 @@ return new class extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('posts');
+        Schema::table('posts', function (Blueprint $table) {
+            $table->dropColumn('expire_date');
+        });
     }
 };

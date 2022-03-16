@@ -52,7 +52,8 @@ class PostsController extends Controller
             'name' => 'required|max:255',
             'content' => 'required',
             'user_id' => 'required|integer',
-            'created_at' => 'nullable|date'
+            'created_at' => 'nullable|date',
+            'expire_date' => 'date'
         ]);
 
         //create a post
