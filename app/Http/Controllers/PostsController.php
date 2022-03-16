@@ -6,6 +6,9 @@ use Illuminate\Http\Request;
 use App\Models\Post;
 use App\Http\Controllers\Auth;
 use DB;
+
+use Illuminate\Support\Facades\Http;
+
 class PostsController extends Controller
 {
     /**
@@ -53,12 +56,10 @@ class PostsController extends Controller
         ]);
 
         //create a post
-
         $post = new Post;
 
         $post->name = $request->name;
         $post->content = $request->content;
-        //$post->user_id=Auth::user()->id;
         $post->user_id = $request->user_id;
         $post->save();
 
@@ -74,6 +75,7 @@ class PostsController extends Controller
     public function show($id)
     {
         $post = Post::find($id);
+        $post->postGuzzleRequest();
         return view('posts.show')->with('post', $post);
         //return $post;
     }
@@ -117,8 +119,6 @@ class PostsController extends Controller
         $post =  Post::find($id);
 
         //Update a post
-
-
         $post->name = $request->input('name');
         $post->content = $request->input('content');
         $post->user_id = $request->input('user_id');

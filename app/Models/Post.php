@@ -5,6 +5,8 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
+use Illuminate\Support\Facades\Http;
+
 class Post extends Model
 {
     use HasFactory;
@@ -20,6 +22,30 @@ class Post extends Model
     /**
      * the content(text) of the article should be hidden
      */
-
      protected $hidden = ['content'];
+
+
+     /**
+      * post a Http request with guzzle. 
+      */
+     public function postGuzzleRequest()
+     {
+         
+         $url = "https://sentim-api.herokuapp.com/api/v1/";
+
+         $myBody = [
+             'text' => $this->content
+         ];
+
+         $request = Http::withHeaders([
+             'Accept' => 'application/json',
+             'Content-Type' => 'application/json'
+         ])->post($url,$myBody);
+         
+        $statusCode = $request->status();
+        $responseBody = json_decode($request->getBody(), true);
+         
+         dd($responseBody);
+         
+     }
 }
